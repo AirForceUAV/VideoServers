@@ -2,10 +2,10 @@ import Queue
 import threading
 import time
 import base64
+import threading
 import paho.mqtt.client as mqtt
 
-ImagesQueue = Queue.Queue()
-
+ImagesQueue = Queue.Queue(5)
 def on_connect(client,userdata,rc):
     #print "Connected with result code" + str(rc)
     client.subscribe("Video")
@@ -20,5 +20,15 @@ client.on_connect = on_connect
 client.on_message = on_message
 
 client.connect("127.0.0.1",1883,60)
-client.loop_start()
+#client.loop_start()
+t = threading.Thread(target=client.loop_start)
+t.start()
+
+#class VideoStream(object):
+#    def OnConnect(
+#    def __init__(self):
+#        self.images = Queue.Queue()
+#        self.client = mqtt.Client()
+#        self.on_connect(client,userdata,rc)
+#        
 
