@@ -6,16 +6,18 @@ import threading
 import paho.mqtt.client as mqtt
 
 ImagesQueue = Queue.Queue(5)
+ClientNum = 0
 def on_connect(client,userdata,rc):
     #print "Connected with result code" + str(rc)
     client.subscribe("Video")
 
 def on_message(client ,userdata, msg):
+    global ClientNum
     if msg.topic == "Video":
         ImagesQueue.put(base64.b64decode(str(msg.payload)))
     #print msg.topic + " " + str(msg.payload)
 
-client = mqtt.Client()
+client = mqtt.Client(client_id = "VideoPlayer")
 client.on_connect = on_connect
 client.on_message = on_message
 
