@@ -8,13 +8,14 @@ class Camera(object):
     def __init__(self):
         VideoServers.ClientNum += 1
         self.frames = [open(f + '.jpg', 'rb').read() for f in ['1', '2', '3']]
+        self.last=open("default.jpg","rb").read()
 
     def get_frame(self):
-        #if VideoServers.ImagesQueue.empty() == False:
-        image = VideoServers.ImagesQueue.get() 
         sleep(.01)
-        return image
-        return self.frames[int(time()) % 3]
+        if VideoServers.ImagesQueue.empty() == False:
+            self.last = VideoServers.ImagesQueue.get() 
+            return self.last
+        return self.last
 
     def __del__(self):
         VideoServers.ClientNum -= 1

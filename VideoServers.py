@@ -13,7 +13,7 @@ def on_connect(client,userdata,rc):
 
 def on_message(client ,userdata, msg):
     global ClientNum
-    if msg.topic == "Video":
+    if ClientNum > 0 and msg.topic == "Video":
         ImagesQueue.put(base64.b64decode(str(msg.payload)))
     #print msg.topic + " " + str(msg.payload)
 
